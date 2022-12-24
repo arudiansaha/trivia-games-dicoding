@@ -4,7 +4,8 @@ class AppContent extends HTMLElement {
   }
 
   render() {
-    this.setAttribute('class', 'block max-w-3xl mx-auto py-6');
+    this.setAttribute('class', 'block max-w-3xl mx-auto p-6');
+    this.innerHTML = '';
   }
 }
 

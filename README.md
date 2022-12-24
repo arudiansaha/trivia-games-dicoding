@@ -8,5 +8,6 @@
 
 - [x] Add category list
 - [x] Add questions by type
-- [ ] Add scores table with localStorage
+- [x] Add scores table with localStorage
 - [ ] Clean code
+- [ ] Add reset button
