@@ -10,4 +10,4 @@
 - [x] Add questions by type
 - [x] Add scores table with localStorage
 - [ ] Clean code
-- [ ] Add reset button
+- [x] Add reset button
