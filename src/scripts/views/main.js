@@ -37,10 +37,13 @@ function loadData() {
 }
 
 async function generateToken() {
-  const token = localStorage.getItem(TOKEN_KEY);
-
-  if (token === null) localStorage.setItem(TOKEN_KEY, await api.sessionToken());
-  return token;
+  try {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token === null) localStorage.setItem(TOKEN_KEY, await api.sessionToken());
+    return;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function generateId() {
@@ -58,16 +61,20 @@ function makeData(id, category, score) {
 }
 
 async function startHandler() {
-  const token = await generateToken();
-  const category = optionELement.value.value;
-  const questions = await api.questions(token, category);
+  try {
+    const token = await generateToken();
+    const category = optionELement.value.value;
+    const questions = await api.questions(token, category);
 
-  if (questions.length === 0) localStorage.removeItem(TOKEN_KEY);
+    if (questions.length === 0) localStorage.removeItem(TOKEN_KEY);
 
-  if (questions.length > 0) {
-    contentElement.innerHTML = '';
-    questionsELement.questions = questions;
-    contentElement.appendChild(questionsELement);
+    if (questions.length > 0) {
+      contentElement.innerHTML = '';
+      questionsELement.questions = questions;
+      contentElement.appendChild(questionsELement);
+    }
+  } catch (error) {
+    console.error(error);
   }
 }
 
