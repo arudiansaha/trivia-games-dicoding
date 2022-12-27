@@ -14,29 +14,29 @@ const optionELement = document.createElement('select-option');
 const recordElement = document.createElement('record-table');
 const questionsELement = document.createElement('question-list');
 
-function isStorageExist() {
+const isStorageExist = () => {
   if (typeof (Storage) !== 'undefined') return true;
 
   console.error('Browser tidak mendukung local storage');
   return false;
-}
+};
 
-function saveData() {
+const saveData = () => {
   if (!isStorageExist()) return;
 
   const parsed = JSON.stringify(scores);
   localStorage.setItem(SCORES_KEY, parsed);
-}
+};
 
-function loadData() {
+const loadData = () => {
   const serializedData = localStorage.getItem(SCORES_KEY);
   const data = JSON.parse(serializedData);
 
   if (data === null) return;
   data.forEach((score) => scores.push(score));
-}
+};
 
-async function generateToken() {
+const generateToken = async () => {
   try {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token === null) localStorage.setItem(TOKEN_KEY, await api.sessionToken());
@@ -44,23 +44,19 @@ async function generateToken() {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
-function generateId() {
-  return `trivia-${+new Date()}`;
-}
+const generateId = () => `trivia-${+new Date()}`;
 
-function makeData(id, category, score) {
-  return {
-    id,
-    category,
-    date: new Date().toLocaleDateString(),
-    score,
-    time: new Date().toLocaleTimeString(),
-  };
-}
+const makeData = (id, category, score) => ({
+  id,
+  category,
+  date: new Date().toLocaleDateString(),
+  score,
+  time: new Date().toLocaleTimeString(),
+});
 
-async function startHandler() {
+const startHandler = async () => {
   try {
     const token = await generateToken();
     const category = optionELement.value.value;
@@ -76,14 +72,14 @@ async function startHandler() {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
-function resetHandler() {
+const resetHandler = () => {
   localStorage.setItem(SCORES_KEY, '[]');
   window.location.reload();
-}
+};
 
-function submitHandler() {
+const submitHandler = () => {
   const answers = [];
 
   const selectElement = document.querySelectorAll('select');
@@ -95,9 +91,9 @@ function submitHandler() {
   scores.push(score);
   saveData();
   window.location.reload();
-}
+};
 
-export default async function main() {
+const main = async () => {
   loadData();
 
   optionELement.categories = await api.categories();
@@ -110,4 +106,6 @@ export default async function main() {
   optionELement.resetEvent = resetHandler;
 
   questionsELement.clickEvent = submitHandler;
-}
+};
+
+export default main;
